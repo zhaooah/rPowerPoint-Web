@@ -2,6 +2,16 @@ require "bundler/setup"
 Bundler.require(:default)
 require './lib/rPowerPoint'
  
+ configure :production, :development do
+   enable :logging
+   set :sessions, true
+set :logging, true
+set :dump_errors, false
+set :some_custom_option, false
+ end
+
+before { env['rack.logger'] = Logger.new'testlog'  }
+
 def GeneratePowerPoint(outputName)
 
   #Read Input CSV
@@ -18,6 +28,9 @@ def GeneratePowerPoint(outputName)
 
   #Call the function
   RPowerPoint::PowerPointObject.new(outputName,src)
+
+  haml :result
+
 
 end
 
@@ -40,6 +53,6 @@ post '/' do
       f.write(params['datasource'][:tempfile].read)
     end
 
+    GeneratePowerPoint(params['outputName'])
 
-    haml :result
 end

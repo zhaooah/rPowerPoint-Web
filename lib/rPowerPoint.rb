@@ -44,9 +44,12 @@ module RPowerPoint
 
 
 		def initialize(output_name,source_data)
-			exec('cd ./'+output_name)
-			rename_zip
-			mac_unzip
+
+
+
+
+			rename_zip(output_name)
+			mac_unzip(output_name)
 			@output_file_name=output_name
 			create_slides(output_name,source_data)
 			delete_folder(output_name)
@@ -83,8 +86,8 @@ module RPowerPoint
 			FileUtils.mkdir_p output_name
 		end
 
-		def rename_zip
-			exec('mv template.pptx template.zip')
+		def rename_zip(output_name)
+			exec('mv '+output_name+'/template.pptx '+output_name+'/template.zip')
 		end
 
 		#Ditto command only work under Mac, please use approiate linux command
@@ -93,8 +96,9 @@ module RPowerPoint
 			exec('ditto -ck --rsrc --sequesterRsrc '+output_name+' '+output_name+'.pptx')
 		end
 
-		def mac_unzip
-			exec('ditto -x -k template.zip template')
+		def mac_unzip(output_name)
+			puts 'mv '+output_name+'/template.pptx '+output_name+'/template.zip'
+#			exec('ditto -x -k template.zip template')
 		end
 
 
